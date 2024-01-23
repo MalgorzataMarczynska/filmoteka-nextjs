@@ -80,3 +80,11 @@ export async function fetchSearchedMoviesWithGenreNames(
   }
   return results;
 }
+export async function fetchTotalPages(query: string, page = 1) {
+  if (query) {
+    const { movies, total_pages } = await fetchSearchedMovies(query, page);
+    return total_pages;
+  }
+  const { movies, total_pages } = await fetchTrendingMovies();
+  return total_pages;
+}
