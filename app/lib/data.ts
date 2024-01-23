@@ -30,13 +30,46 @@ export async function fetchGenres() {
   }
 }
 
-export async function fetchTrendingMoviesWithGenreNames() {
+export async function fetchSearchedMovies(search: string, pageNo: number) {
+  noStore();
+  try {
+    const response = await fetch(
+      `${API_URL}search/movie?api_key=${API_KEY}&query=${search}&page=${pageNo}`
+    );
+    const movies = await response.json();
+    return movies;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error("Failed to fetch searched movies");
+  }
+}
+export async function fetchTrendingMoviesWithGenreNames(pageNo: number) {
   noStore();
   const [genres, trendingMovies] = await Promise.all([
     fetchGenres(),
-    fetchTrendingMovies(),
+    fetchTrendingMovies(pageNo),
   ]);
   const { page, results, total_pages } = trendingMovies;
+  for (const result of results) {
+    const names = genres
+      .filter((el: { id: number; name: string }) =>
+        result.genre_ids.includes(el.id)
+      )
+      .map((el: { id: number; name: string }) => el.name);
+    result.genre_ids = [...names];
+  }
+  return results;
+}
+export async function fetchSearchedMoviesWithGenreNames(
+  searchValue: string,
+  pageNum: number
+) {
+  noStore();
+  const [genres, searchedMovies] = await Promise.all([
+    fetchGenres(),
+    fetchSearchedMovies(searchValue, pageNum),
+  ]);
+  const { page, results, total_pages } = searchedMovies;
   for (const result of results) {
     const names = genres
       .filter((el: { id: number; name: string }) =>
