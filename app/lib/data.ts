@@ -1,4 +1,4 @@
-import { User, FilmTable } from "./definitions";
+import { User, LibraryMovie } from "./definitions";
 import { unstable_noStore as noStore } from "next/cache";
 
 const API_URL = "https://api.themoviedb.org/3/";
@@ -87,4 +87,15 @@ export async function fetchTotalPages(query: string, page = 1) {
   }
   const { movies, total_pages } = await fetchTrendingMovies();
   return total_pages;
+}
+export async function fetchMovieById(id: number) {
+  noStore();
+  try {
+    const response = await fetch(`${API_URL}movie/${id}?api_key=${API_KEY}`);
+    const movie = await response.json();
+    return movie;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error("Failed to fetch searched movie");
+  }
 }
