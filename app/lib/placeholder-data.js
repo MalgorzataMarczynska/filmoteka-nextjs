@@ -1,7 +1,7 @@
-const users = [
+export const users = [
   {
     id: "410544b2-4001-4271-9855-fec4b654442a",
-    name: "Somebody",
+    name: "Someone",
     email: "user1@nextmail.com",
     password: "alv12345alv6",
   },

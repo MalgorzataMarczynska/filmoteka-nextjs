@@ -1,4 +1,5 @@
 import { User, LibraryMovie } from "./definitions";
+import { movies } from "./placeholder-data";
 import { unstable_noStore as noStore } from "next/cache";
 
 const API_URL = "https://api.themoviedb.org/3/";
@@ -97,5 +98,52 @@ export async function fetchMovieById(id: number) {
   } catch (error) {
     console.error("Fetching error:", error);
     throw new Error("Failed to fetch searched movie");
+  }
+}
+export async function fetchMovieIdsByStatus(status: string, user: string) {
+  noStore();
+  try {
+    const statusMovies = movies.filter(
+      (movie) => movie.status === status && movie.userId === user
+    );
+    const moviesIds = statusMovies.map((movie) => movie.movieId);
+    return moviesIds;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error(`Failed to fetch ${status} ids from database`);
+  }
+}
+export async function fetchMovieDetails(ids: number[]) {
+  try {
+    const details = [];
+    if (ids.length === 0) {
+      return;
+    }
+    for (const id of ids) {
+      const movie = await fetchMovieById(id);
+      movie.genre_ids = movie.genres.map(
+        (genre: { id: number; name: string }) => genre.name
+      );
+      details.push(movie);
+    }
+    return details;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error(`Failed to fetch library movies from database`);
+  }
+}
+export async function countMovies(status: string, user: string) {
+  noStore();
+  const limitPerPage = 20;
+  try {
+    const amountOfMovies = movies.filter(
+      (movie) => movie.status === status && movie.userId === user
+    ).length;
+    const totalPages =
+      amountOfMovies > limitPerPage ? amountOfMovies / limitPerPage : 1;
+    return totalPages;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error(`Failed to count ${status} movies from database`);
   }
 }
