@@ -6,14 +6,14 @@ import Pagination from "./ui/pagination";
 import Modal from "./ui/modal";
 import { fetchTotalPages } from "./lib/data";
 
-export default async function Home({
+export default async function Page({
   searchParams,
 }: {
   searchParams?: {
     query?: string;
     page?: string;
-    show: boolean;
-    id: string | undefined;
+    show?: boolean;
+    id?: string;
   };
 }) {
   const query = searchParams?.query || "";
@@ -48,7 +48,9 @@ export default async function Home({
         </Suspense>
       )}
       <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
+        <Suspense key="pagination-home" fallback={<p>Loading...</p>}>
+          <Pagination totalPages={totalPages} />
+        </Suspense>
       </div>
     </main>
   );

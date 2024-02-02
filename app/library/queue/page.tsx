@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import { CardsWrapperSkeleton, MovieSkeleton } from "@/app/ui/skeletons";
 import Modal from "@/app/ui/modal";
 
-export default async function Queue({
+export default async function Page({
   searchParams,
 }: {
   searchParams?: {
@@ -41,9 +41,9 @@ export default async function Queue({
           />
         </Suspense>
       )}
-      <div className="mt-5 flex w-full justify-center">
+      <Suspense fallback={<p>Loading...</p>}>
         <Pagination totalPages={totalPages} />
-      </div>
+      </Suspense>
     </main>
   );
 }

@@ -5,6 +5,7 @@ import NavLinks from "../nav-links";
 import SearchBar from "./search";
 import Filters from "../library/navfilters";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -23,16 +24,22 @@ export default function Navbar() {
         </Link>
         <div className="flex justify-between">
           <nav className="flex items-center justify-between mr-4">
-            <NavLinks />
+            <Suspense key="nav-links" fallback={<p>Loading links</p>}>
+              <NavLinks />
+            </Suspense>
           </nav>
           <div>Login</div>
         </div>
       </div>
       <div className="w-2/6">
         {pathname.includes("library") ? (
-          <Filters />
+          <Suspense key="Filters" fallback={<p>Loading filters...</p>}>
+            <Filters />
+          </Suspense>
         ) : (
-          <SearchBar placeholder="Search movies by name" />
+          <Suspense key="search" fallback={<p>Loading searchbar...</p>}>
+            <SearchBar placeholder="Search movies by name" />
+          </Suspense>
         )}
       </div>
     </div>

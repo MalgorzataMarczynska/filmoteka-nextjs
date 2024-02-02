@@ -1,4 +1,4 @@
-export default function Library() {
+export default function Page() {
   return (
     <main className="container mx-auto py-10">
       <div>
