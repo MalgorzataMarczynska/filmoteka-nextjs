@@ -103,6 +103,7 @@ export async function fetchMovieById(id: number) {
 export async function fetchMovieIdsByStatus(status: string, user: string) {
   noStore();
   try {
+    //baza danych zamiast movies
     const statusMovies = movies.filter(
       (movie) => movie.status === status && movie.userId === user
     );
