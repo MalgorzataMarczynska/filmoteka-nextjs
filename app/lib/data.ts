@@ -108,6 +108,7 @@ export async function fetchMovieIdsByStatus(status: string, user: string) {
       (movie) => movie.status === status && movie.userId === user
     );
     const moviesIds = statusMovies.map((movie) => movie.movieId);
+    console.log("movies ids", moviesIds);
     return moviesIds;
   } catch (error) {
     console.error("Fetching error:", error);
@@ -136,6 +137,7 @@ export async function fetchMovieDetails(ids: number[]) {
 export async function countMovies(status: string, user: string) {
   noStore();
   const limitPerPage = 20;
+  //baza danych zamiast movies i jak ustawic limit?
   try {
     const amountOfMovies = movies.filter(
       (movie) => movie.status === status && movie.userId === user
