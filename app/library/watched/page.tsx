@@ -21,7 +21,7 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
   const show = searchParams?.show;
   const id = searchParams?.id;
-  const totalPages = await countMovies("queue", user);
+  const totalPages = await countMovies("watched", user);
 
   return (
     <main className="container mx-auto py-10">

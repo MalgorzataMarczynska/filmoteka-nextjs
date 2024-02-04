@@ -1,10 +1,11 @@
 import { User, LibraryMovie } from "./definitions";
-import { users, movies } from "./placeholder-data.js";
 import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from "next/cache";
 
 const API_URL = "https://api.themoviedb.org/3/";
 const API_KEY = process.env.MOVIEDB_API;
+const ITEMS_PER_PAGE = 20;
+
 export async function fetchTrendingMovies(pageNo = 1) {
   noStore();
   try {
@@ -101,27 +102,14 @@ export async function fetchMovieById(id: number) {
     throw new Error("Failed to fetch searched movie");
   }
 }
-const ITEMS_PER_PAGE = 20;
+
 export async function fetchMovieIdsByStatus(status: string, user: string) {
   noStore();
   try {
-    //baza danych zamiast movies
-    const statusMovies = movies.filter(
-      (movie) => movie.status === status && movie.user_id === user
-    );
-
-    const moviesWithStatus =
-      await sql<LibraryMovie>`SELECT movies.user_id, movies.movie_id, movies.status, movies.date FROM movies WHERE movies.user_id = ${user} AND movies.status = ${status} ORDER BY movies.date DESC LIMIT ${ITEMS_PER_PAGE}`;
-    console.log("moviesId", moviesWithStatus.rows);
-    const moviesIds1 = moviesWithStatus.rows.map((movie) => movie.movie_id);
-    console.log("idiki", moviesIds1);
-    const moviesIds = statusMovies.map((movie) => movie.movie_id);
-    //console.log("movies ids", moviesIds);
-
-    const moviesCount = await sql`SELECT COUNT(*) FROM movies`;
-    const numberOfMovies = moviesCount.rows[0].count ?? "0";
-
-    return moviesIds;
+    const moviesIds =
+      await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${user} AND movies.status = ${status} ORDER BY movies.movie_id ASC LIMIT ${ITEMS_PER_PAGE}`;
+    const moviesIdsArray = moviesIds.rows.map((movie) => movie.movie_id);
+    return moviesIdsArray;
   } catch (error) {
     console.error("Fetching error:", error);
     throw new Error(`Failed to fetch ${status} ids from database`);
@@ -148,14 +136,12 @@ export async function fetchMovieDetails(ids: number[]) {
 }
 export async function countMovies(status: string, user: string) {
   noStore();
-  const limitPerPage = 20;
-  //baza danych zamiast movies i jak ustawic limit?
   try {
-    const amountOfMovies = movies.filter(
-      (movie) => movie.status === status && movie.user_id === user
-    ).length;
+    const moviesCount =
+      await sql`SELECT COUNT(*) FROM movies WHERE movies.user_id = ${user} AND movies.status = ${status}`;
+    const numberOfMovies = Number(moviesCount.rows[0].count ?? "0");
     const totalPages =
-      amountOfMovies > limitPerPage ? amountOfMovies / limitPerPage : 1;
+      numberOfMovies > ITEMS_PER_PAGE ? numberOfMovies / ITEMS_PER_PAGE : 1;
     return totalPages;
   } catch (error) {
     console.error("Fetching error:", error);
