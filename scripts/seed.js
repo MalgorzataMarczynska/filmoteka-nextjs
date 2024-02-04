@@ -28,7 +28,7 @@ async function seedMovies(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     const createTable =
-      await client.sql`CREATE TABLE IF NOT EXISTS movies (user_id TEXT NOT NULL, movie_id INT NOT NULL, status VARCHAR(255) NOT NULL, date DATE NOT NULL);`;
+      await client.sql`CREATE TABLE IF NOT EXISTS movies (user_id UUID NOT NULL, movie_id INT NOT NULL, status VARCHAR(255) NOT NULL, date DATE NOT NULL);`;
     console.log(`Created "movies" table`);
     const insertedMovies = await Promise.all(
       movies.map(
