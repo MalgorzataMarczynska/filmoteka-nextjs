@@ -8,7 +8,7 @@ const users = [
     password: "alv12345alv6",
   },
   {
-    id: "3958dc9e-742f-4377-85e9-fec4b6a6442a",
+    id: "410544b2-4001-4271-9855-fec4b6a6442a",
     name: "Somebody",
     email: "user22@nextmail.com",
     password: "alv12387dnj45",
@@ -16,32 +16,32 @@ const users = [
 ];
 const movies = [
   {
-    userId: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
-    movieId: 609681,
+    user_id: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
+    movie_id: 609681,
     status: "watched",
     date: "2024-01-02",
   },
   {
-    userId: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
-    movieId: 787699,
+    user_id: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
+    movie_id: 787699,
     status: "queue",
     date: "2024-01-12",
   },
   {
-    userId: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
-    movieId: 792307,
+    user_id: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
+    movie_id: 792307,
     status: "queue",
     date: "2024-01-15",
   },
   {
-    userId: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
-    movieId: 673593,
+    user_id: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
+    movie_id: 673593,
     status: "watched",
     date: "2024-01-21",
   },
   {
-    userId: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
-    movieId: 447365,
+    user_id: "3958dc9e-712f-4377-85e9-fec4b6a6442a",
+    movie_id: 447365,
     status: "watched",
     date: "2024-01-16",
   },

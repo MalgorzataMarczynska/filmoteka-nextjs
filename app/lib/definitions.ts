@@ -5,8 +5,8 @@ export type User = {
   password: string;
 };
 export type LibraryMovie = {
-  userId: string;
-  movieId: number;
+  user_id: string;
+  movie_id: number;
   status: "watched" | "queue";
   date: string;
 };

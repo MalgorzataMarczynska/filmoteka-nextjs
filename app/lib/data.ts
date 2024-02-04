@@ -1,5 +1,6 @@
 import { User, LibraryMovie } from "./definitions";
-import { movies } from "./placeholder-data";
+import { users, movies } from "./placeholder-data.js";
+import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from "next/cache";
 
 const API_URL = "https://api.themoviedb.org/3/";
@@ -100,15 +101,26 @@ export async function fetchMovieById(id: number) {
     throw new Error("Failed to fetch searched movie");
   }
 }
+const ITEMS_PER_PAGE = 20;
 export async function fetchMovieIdsByStatus(status: string, user: string) {
   noStore();
   try {
     //baza danych zamiast movies
     const statusMovies = movies.filter(
-      (movie) => movie.status === status && movie.userId === user
+      (movie) => movie.status === status && movie.user_id === user
     );
-    const moviesIds = statusMovies.map((movie) => movie.movieId);
-    console.log("movies ids", moviesIds);
+
+    const moviesWithStatus =
+      await sql<LibraryMovie>`SELECT movies.user_id, movies.movie_id, movies.status, movies.date FROM movies WHERE movies.user_id = ${user} AND movies.status = ${status} ORDER BY movies.date DESC LIMIT ${ITEMS_PER_PAGE}`;
+    console.log("moviesId", moviesWithStatus.rows);
+    const moviesIds1 = moviesWithStatus.rows.map((movie) => movie.movie_id);
+    console.log("idiki", moviesIds1);
+    const moviesIds = statusMovies.map((movie) => movie.movie_id);
+    //console.log("movies ids", moviesIds);
+
+    const moviesCount = await sql`SELECT COUNT(*) FROM movies`;
+    const numberOfMovies = moviesCount.rows[0].count ?? "0";
+
     return moviesIds;
   } catch (error) {
     console.error("Fetching error:", error);
@@ -140,7 +152,7 @@ export async function countMovies(status: string, user: string) {
   //baza danych zamiast movies i jak ustawic limit?
   try {
     const amountOfMovies = movies.filter(
-      (movie) => movie.status === status && movie.userId === user
+      (movie) => movie.status === status && movie.user_id === user
     ).length;
     const totalPages =
       amountOfMovies > limitPerPage ? amountOfMovies / limitPerPage : 1;
