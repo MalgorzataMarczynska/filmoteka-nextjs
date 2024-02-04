@@ -8,14 +8,14 @@ const date = new Date().toISOString().split("T")[0];
 export async function addToQueue(movieId: number, userId: string) {
   const duplicateMovie = movies?.find(
     (movie) =>
-      movie.movieId === movieId &&
-      movie.userId === userId &&
+      movie.movie_id === movieId &&
+      movie.user_id === userId &&
       movie.status === "queue"
   );
   const differentStatusMovie = movies?.find(
     (movie) =>
-      movie.movieId === movieId &&
-      movie.userId === userId &&
+      movie.movie_id === movieId &&
+      movie.user_id === userId &&
       movie.status === "watched"
   );
 
@@ -29,8 +29,8 @@ export async function addToQueue(movieId: number, userId: string) {
     }
     console.log(`I am saving queue data ${userId}, ${movieId}`);
     movies.push({
-      userId: userId,
-      movieId: movieId,
+      user_id: userId,
+      movie_id: movieId,
       status: "queue",
       date: date,
     });
@@ -44,14 +44,14 @@ export async function addToQueue(movieId: number, userId: string) {
 export async function addToWatched(movieId: number, userId: string) {
   const duplicateMovie = movies?.find(
     (movie) =>
-      movie.movieId === movieId &&
-      movie.userId === userId &&
+      movie.movie_id === movieId &&
+      movie.user_id === userId &&
       movie.status === "queue"
   );
   const differentStatusMovie = movies?.find(
     (movie) =>
-      movie.movieId === movieId &&
-      movie.userId === userId &&
+      movie.movie_id === movieId &&
+      movie.user_id === userId &&
       movie.status === "queue"
   );
 
@@ -65,8 +65,8 @@ export async function addToWatched(movieId: number, userId: string) {
     }
     console.log(" I am saving watched data");
     movies.push({
-      userId: userId,
-      movieId: movieId,
+      user_id: userId,
+      movie_id: movieId,
       status: "watched",
       date: date,
     });
