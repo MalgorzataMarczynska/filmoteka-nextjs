@@ -5,8 +5,12 @@ import { users } from "../../lib/placeholder-data";
 import NotFoundWatched from "./not-found";
 
 const user = users[0].id;
-export default async function WatchedMoviesChart() {
-  const ids = await fetchMovieIdsByStatus("watched", user);
+export default async function WatchedMoviesChart({
+  currentPage,
+}: {
+  currentPage: number;
+}) {
+  const ids = await fetchMovieIdsByStatus("watched", user, currentPage);
   const movies = ids ? await fetchMovieDetails(ids) : undefined;
   return (
     <>

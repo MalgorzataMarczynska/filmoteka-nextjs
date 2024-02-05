@@ -5,8 +5,12 @@ import { users } from "../../lib/placeholder-data";
 import NotFoundQueue from "./not-found";
 
 const user = users[0].id;
-export default async function QueueMoviesChart() {
-  const ids = await fetchMovieIdsByStatus("queue", user);
+export default async function QueueMoviesChart({
+  currentPage,
+}: {
+  currentPage: number;
+}) {
+  const ids = await fetchMovieIdsByStatus("queue", user, currentPage);
   const movies = ids ? await fetchMovieDetails(ids) : undefined;
   return (
     <>

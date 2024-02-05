@@ -29,7 +29,7 @@ export default async function Page({
         Your movie in queue to watch
       </h2>
       <Suspense key={currentPage} fallback={<CardsWrapperSkeleton />}>
-        <QueueMoviesChart />
+        <QueueMoviesChart currentPage={currentPage} />
       </Suspense>
       {show && (
         <Suspense key={id} fallback={<MovieSkeleton />}>
@@ -41,9 +41,11 @@ export default async function Page({
           />
         </Suspense>
       )}
-      <Suspense fallback={<p>Loading...</p>}>
-        <Pagination totalPages={totalPages} />
-      </Suspense>
+      <div className="mt-5 flex w-full justify-center">
+        <Suspense fallback={<p>Loading...</p>}>
+          <Pagination totalPages={totalPages} />
+        </Suspense>
+      </div>
     </main>
   );
 }

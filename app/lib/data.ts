@@ -103,11 +103,16 @@ export async function fetchMovieById(id: number) {
   }
 }
 
-export async function fetchMovieIdsByStatus(status: string, user: string) {
+export async function fetchMovieIdsByStatus(
+  status: string,
+  user: string,
+  currentPage: number
+) {
   noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     const moviesIds =
-      await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${user} AND movies.status = ${status} ORDER BY movies.movie_id ASC LIMIT ${ITEMS_PER_PAGE}`;
+      await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${user} AND movies.status = ${status} ORDER BY movies.movie_id ASC LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
     const moviesIdsArray = moviesIds.rows.map((movie) => movie.movie_id);
     return moviesIdsArray;
   } catch (error) {
@@ -141,7 +146,9 @@ export async function countMovies(status: string, user: string) {
       await sql`SELECT COUNT(*) FROM movies WHERE movies.user_id = ${user} AND movies.status = ${status}`;
     const numberOfMovies = Number(moviesCount.rows[0].count ?? "0");
     const totalPages =
-      numberOfMovies > ITEMS_PER_PAGE ? numberOfMovies / ITEMS_PER_PAGE : 1;
+      numberOfMovies > ITEMS_PER_PAGE
+        ? Math.ceil(numberOfMovies / ITEMS_PER_PAGE)
+        : 1;
     return totalPages;
   } catch (error) {
     console.error("Fetching error:", error);
