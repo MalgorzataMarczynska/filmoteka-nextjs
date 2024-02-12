@@ -3,7 +3,6 @@ import { users, movies } from "./placeholder-data";
 import { LibraryMovie } from "./definitions";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 const userId = users[0].id;
 const date = new Date().toISOString().split("T")[0];
@@ -19,7 +18,7 @@ export async function addToQueue(movieId: number, userId: string) {
 
   try {
     if (duplicated !== 0) {
-      throw new Error("You have already added this movie to queue.");
+      return { message: "You have already added this movie to queue." };
     }
     if (differentStatus !== 0) {
       console.log(" I am changing status to queue");
@@ -32,8 +31,7 @@ export async function addToQueue(movieId: number, userId: string) {
     await sql`INSERT INTO movies (user_id, movie_id, status, date) VALUES (${userId}, ${movieId}, 'queue', ${date})`;
     revalidatePath("/library/queue");
   } catch (error) {
-    console.error("Saving error:", error);
-    throw new Error("Failed to add to queue");
+    return { message: "Failed to add to queue" };
   }
 }
 export async function addToWatched(movieId: number, userId: string) {
@@ -47,7 +45,7 @@ export async function addToWatched(movieId: number, userId: string) {
 
   try {
     if (duplicated !== 0) {
-      throw new Error("You have already added this movie to watched.");
+      return { message: "You have already added this movie to watched." };
     }
     if (differentStatus !== 0) {
       console.log(" I am changing status to watched");
@@ -60,7 +58,6 @@ export async function addToWatched(movieId: number, userId: string) {
     await sql`INSERT INTO movies (user_id, movie_id, status, date) VALUES (${userId}, ${movieId}, 'watched', ${date})`;
     revalidatePath("/library/watched");
   } catch (error) {
-    console.error("Saving error:", error);
-    throw new Error("Failed to add to watched");
+    return { message: "Failed to add to watched" };
   }
 }

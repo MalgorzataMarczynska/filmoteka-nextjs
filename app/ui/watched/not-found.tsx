@@ -21,8 +21,8 @@ export default function NotFoundWatched() {
           trending movies
         </Link>{" "}
         this week or search by movie title in our database. You will certainly
-        find there something interesting. If you want to find something e.g. in
-        specific genre use advanced filters in{" "}
+        find there something interesting. If you always want to keep your finger
+        on the pulse, we have prepared upcoming movies for you{" "}
         <Link
           href="/library"
           className="text-orange-600 tracking-wider underline underline-offset-2"

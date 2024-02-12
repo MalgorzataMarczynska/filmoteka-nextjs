@@ -2,7 +2,12 @@ import { fetchMovieById } from "../lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { AddToQueueButton, AddToWatchedButton } from "./buttons";
+import {
+  AddToQueueButton,
+  AddToWatchedButton,
+  FindSimilar,
+  ShowDetails,
+} from "./buttons";
 
 export default async function Modal({
   movieId,
@@ -15,6 +20,7 @@ export default async function Modal({
   search: string;
   page: number;
 }) {
+  const backToPath = backTo.split("?");
   if (!movieId) {
     return;
   }
@@ -22,6 +28,14 @@ export default async function Modal({
     {
       value: "home",
       href: "/",
+    },
+    {
+      value: "library",
+      href: "/library",
+    },
+    {
+      value: "similar",
+      href: "/library/similar",
     },
     {
       value: "queue",
@@ -33,18 +47,24 @@ export default async function Modal({
     },
   ];
 
-  const valuedPath = pathValues.find((path) => path.value === backTo);
+  const valuedPath = pathValues.find((path) => path.value === backToPath[0]);
   const path = valuedPath ? valuedPath.href : "/";
 
   const backPath = (query: string, page: number) => {
     if (query && page > 1) {
       return `${path}/?query=${query}&page=${page}`;
     }
-    if (!query && page !== 1) {
+    if (!query && !backToPath[1] && page !== 1) {
       return `${path}/?page=${page}`;
     }
     if (page === 1 && query) {
       return `${path}/?query=${query}`;
+    }
+    if (backToPath[1] && page === 1) {
+      return `${path}/?${backToPath[1]}`;
+    }
+    if (backToPath[1] && page > 1) {
+      return `${path}/?${backToPath[1]}&page=${page}`;
     }
     return path;
   };
@@ -147,6 +167,10 @@ export default async function Modal({
               <div className="mt-10 flex justify-between">
                 <AddToQueueButton id={id} />
                 <AddToWatchedButton id={id} />
+              </div>
+              <div className="mt-10 flex justify-between">
+                <FindSimilar id={id} />
+                <ShowDetails id={id} />
               </div>
             </div>
           </div>

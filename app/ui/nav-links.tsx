@@ -6,6 +6,8 @@ import {
   FilmIcon,
   BookmarkIcon,
   BookmarkSlashIcon,
+  BellIcon,
+  PuzzlePieceIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
@@ -16,8 +18,18 @@ const links = [
     icon: HomeIcon,
   },
   {
-    name: "My library",
+    name: "Upcoming Movies",
     href: "/library",
+    icon: BellIcon,
+  },
+  {
+    name: "Similar Movies",
+    href: "/library/similar",
+    icon: PuzzlePieceIcon,
+  },
+  {
+    name: "Movie details",
+    href: "/library/movieDetails",
     icon: FilmIcon,
   },
   {
@@ -46,7 +58,7 @@ export default function NavLinks() {
                 pathname === link.href,
             })}
           >
-            <LinkIcon className="w-5 stroke-zinc-200" />
+            <LinkIcon className="w-3 md:w-5 stroke-zinc-200" />
             <p className="hidden md:flex uppercase text-sm tracking-wider text-zinc-200 font-medium pl-2">
               {link.name}
             </p>

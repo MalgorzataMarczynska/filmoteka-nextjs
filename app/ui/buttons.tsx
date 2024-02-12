@@ -2,7 +2,10 @@
 import clsx from "clsx";
 import { users } from "../lib/placeholder-data.js";
 import { addToQueue, addToWatched } from "../lib/actions";
+import { fetchCast } from "../lib/data";
 import { usePathname } from "next/navigation.js";
+import Link from "next/link.js";
+import Cast from "./movieDetails/cast";
 
 const userId = users[0].id;
 
@@ -44,5 +47,25 @@ export function AddToWatchedButton({ id }: { id: number }) {
     >
       Add to watched
     </button>
+  );
+}
+export function FindSimilar({ id }: { id: number }) {
+  return (
+    <Link
+      href={`/library/similar?similarTo=${id}`}
+      className="bg-transparent border border-orange-600 rounded text-zinc-900 text-sm font-medium uppercase p-2 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
+    >
+      Find similar movies
+    </Link>
+  );
+}
+export function ShowDetails({ id }: { id: number }) {
+  return (
+    <Link
+      href={`library/movieDetails?id=${id}`}
+      className="bg-transparent border border-orange-600 rounded text-zinc-900 text-sm font-medium uppercase p-2 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
+    >
+      Show movie&#39;s cast&reviews
+    </Link>
   );
 }

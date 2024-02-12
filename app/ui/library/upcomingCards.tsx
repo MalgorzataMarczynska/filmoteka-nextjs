@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export default function Card({
+export default function UpcomingCard({
   movies,
 }: {
   movies: {
@@ -16,18 +16,16 @@ export default function Card({
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const similarTo = searchParams.get("similarTo");
   const search = searchParams.get("query");
   const page = searchParams.get("page");
   const query = search ? `query=${search}&` : "";
   const currentPage = page ? `page=${page}&` : "";
-  const similar = similarTo ? `similarTo=${similarTo}&` : "";
   return (
     <>
       {movies?.map(({ id, title, poster_path, genre_ids, release_date }) => (
         <Link
           key={id}
-          href={`${pathname}?${query}${currentPage}${similar}show=true&id=${id}`}
+          href={`${pathname}?${query}${currentPage}show=true&id=${id}`}
         >
           <li
             key={id}
@@ -54,17 +52,14 @@ export default function Card({
             )}
 
             <div className="py-2.5 px-2">
-              <h2 className="text-base font-medium uppercase text-zinc-200 tracking-wide">
+              <h2 className="text-sm font-medium uppercase text-zinc-200 tracking-wide">
                 {title.length >= 30 ? `${title.slice(0, 27)}...` : title}
               </h2>
-              <p className="text-sm font-medium text-orange-600 pt-1">
+              <p className="text-xs font-medium tracking-wide text-orange-600 pt-1">
                 {genre_ids.length !== 0
                   ? genre_ids.slice(0, 3).join(", ")
                   : "genre unknown"}{" "}
-                |{" "}
-                {release_date
-                  ? release_date.slice(0, 4)
-                  : "release year unknown"}
+                | {release_date ? release_date : "release year unknown"}
               </p>
             </div>
           </li>

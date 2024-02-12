@@ -1,6 +1,7 @@
 import { User, LibraryMovie } from "./definitions";
 import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from "next/cache";
+import { StarIcon } from "@heroicons/react/24/outline";
 
 const API_URL = "https://api.themoviedb.org/3/";
 const API_KEY = process.env.MOVIEDB_API;
@@ -46,6 +47,64 @@ export async function fetchSearchedMovies(search: string, pageNo: number) {
     throw new Error("Failed to fetch searched movies");
   }
 }
+export async function fetchUpcomingMovies(pageNo: number) {
+  noStore();
+  const dayInMs = 24 * 60 * 60 * 1000;
+  const threeMonthsInMs = 3 * 31 * dayInMs;
+  const todayDate = new Date();
+  const startDate = new Date();
+  const endDate = new Date();
+  startDate.setTime(todayDate.getTime() + dayInMs);
+  endDate.setTime(todayDate.getTime() + threeMonthsInMs);
+  try {
+    const response = await fetch(
+      `${API_URL}discover/movie?api_key=${API_KEY}&page=${pageNo}&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&sort_by=popularity.desc`
+    );
+    const movies = await response.json();
+    return movies;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error("Failed to fetch upcoming movies");
+  }
+}
+export async function fetchSimilarMovies(id: number, pageNo: number) {
+  noStore();
+  try {
+    const response = await fetch(
+      `${API_URL}movie/${id}/similar?api_key=${API_KEY}&page=${pageNo}`
+    );
+    const movies = await response.json();
+    return movies;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error("Failed to fetch similar movies");
+  }
+}
+export async function fetchCast(id: number) {
+  try {
+    const response = await fetch(
+      `${API_URL}movie/${id}/credits?api_key=${API_KEY}&language=en-US`
+    );
+    const cast = await response.json();
+    return cast.cast;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error("Failed to fetch movie's cast");
+  }
+}
+export async function fetchReviews(id: number, page: number) {
+  noStore();
+  try {
+    const response = await fetch(
+      `${API_URL}movie/${id}/reviews?api_key=${API_KEY}&language=en-US&page=${page}`
+    );
+    const reviews = await response.json();
+    return reviews.results;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error("Failed to fetch movie's reviews");
+  }
+}
 export async function fetchTrendingMoviesWithGenreNames(pageNo: number) {
   noStore();
   const [genres, trendingMovies] = await Promise.all([
@@ -53,6 +112,23 @@ export async function fetchTrendingMoviesWithGenreNames(pageNo: number) {
     fetchTrendingMovies(pageNo),
   ]);
   const { page, results, total_pages } = trendingMovies;
+  for (const result of results) {
+    const names = genres
+      .filter((el: { id: number; name: string }) =>
+        result.genre_ids.includes(el.id)
+      )
+      .map((el: { id: number; name: string }) => el.name);
+    result.genre_ids = [...names];
+  }
+  return results;
+}
+export async function fetchUpcomingMoviesWithGenreNames(pageNo: number) {
+  noStore();
+  const [genres, upcomingMovies] = await Promise.all([
+    fetchGenres(),
+    fetchUpcomingMovies(pageNo),
+  ]);
+  const { page, results, total_pages } = upcomingMovies;
   for (const result of results) {
     const names = genres
       .filter((el: { id: number; name: string }) =>
@@ -83,12 +159,44 @@ export async function fetchSearchedMoviesWithGenreNames(
   }
   return results;
 }
+export async function fetchSimilarMoviesWithGenreNames(
+  id: number,
+  pageNum: number
+) {
+  noStore();
+  const [genres, similarMovies] = await Promise.all([
+    fetchGenres(),
+    fetchSimilarMovies(id, pageNum),
+  ]);
+  const { page, results, total_pages } = similarMovies;
+  for (const result of results) {
+    const names = genres
+      .filter((el: { id: number; name: string }) =>
+        result.genre_ids.includes(el.id)
+      )
+      .map((el: { id: number; name: string }) => el.name);
+    result.genre_ids = [...names];
+  }
+  return results;
+}
+
 export async function fetchTotalPages(query: string, page = 1) {
   if (query) {
     const { movies, total_pages } = await fetchSearchedMovies(query, page);
     return total_pages;
   }
   const { movies, total_pages } = await fetchTrendingMovies();
+  return total_pages;
+}
+export async function fetchTotalPagesUpcomingMovies(page = 1) {
+  const { movies, total_pages } = await fetchUpcomingMovies(page);
+  return total_pages;
+}
+export async function fetchTotalPagesSimilarMovies(id: number, page = 1) {
+  if (!id) {
+    return 0;
+  }
+  const { movies, total_pages } = await fetchSimilarMovies(id, page);
   return total_pages;
 }
 export async function fetchMovieById(id: number) {
