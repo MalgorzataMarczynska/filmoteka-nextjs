@@ -7,9 +7,9 @@ export default async function FindTitle({ id }: { id: number }) {
 
   return (
     <>
-      <h2 className="text-2xl text-center uppercase font-bold tracking-wider text-orange-600 pb-8">
+      <h2 className="text-xl md:text-2xl text-center uppercase font-bold tracking-wider text-orange-600 pb-8">
         Movies similar to &#34;{movie.title}&#34;{" "}
-        <span className="text-xl">&#91;{genres}&#93;</span>
+        <span className="text-base md:text-xl">&#91;{genres}&#93;</span>
       </h2>
     </>
   );

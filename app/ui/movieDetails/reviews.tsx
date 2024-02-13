@@ -1,6 +1,8 @@
 import { fetchReviews } from "@/app/lib/data";
 import Link from "next/link";
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
+import { Suspense } from "react";
+import Pagination from "../pagination";
 
 export default async function Reviews({
   movieId,
@@ -9,11 +11,13 @@ export default async function Reviews({
   movieId: number;
   currentPage: number;
 }) {
-  const reviews = await fetchReviews(movieId, currentPage);
+  const data = await fetchReviews(movieId, currentPage);
+  const reviews = data.results;
+  const totalPages = data.total_pages;
 
   return (
     <section className="flex flex-col border-b-2 border-zinc-500 py-3">
-      <h3 className="uppercase text-3xl font-bold tracking-wide text-orange-600 mb-2 text-center">
+      <h3 className="uppercase text-xl md:text-3xl font-bold tracking-wide text-orange-600 mb-2 text-center">
         Reviews
       </h3>
       <Link
@@ -23,7 +27,7 @@ export default async function Reviews({
         Minimize the reviews
         <ArrowUpIcon className="stroke-white w-4 ml-2 hover:stroke-white" />
       </Link>
-      <ul className="pt-4">
+      <ul className="pt-4 px-1 md:px-0">
         {reviews?.map(
           ({
             id,
@@ -39,12 +43,12 @@ export default async function Reviews({
             updated_at: string;
           }) => (
             <li key={id} className="pb-3">
-              <div className="flex justify-between border-b-2 border-zinc-500 py-1 text-zinc-500 font-medium">
+              <div className="flex flex-col md:flex-row md:justify-between border-b-2 border-zinc-500 py-1 text-zinc-500 font-medium">
                 <div>
-                  <p>
+                  <p className="text-sm md:text-base">
                     Author: <span>{author}</span>
                   </p>
-                  <p>
+                  <p className="text-sm md:text-base">
                     Movie rating:{" "}
                     <span className="text-orange-600">
                       {author_details.rating}
@@ -52,19 +56,26 @@ export default async function Reviews({
                   </p>
                 </div>
                 <div>
-                  <p>
+                  <p className="text-sm md:text-base">
                     Newest version of review:{" "}
                     <span>{updated_at.split("T")[0]}</span>
                   </p>
                 </div>
               </div>
               <div className="pt-2">
-                <p className="text-sm tracking-wide leading-6">{content}</p>
+                <p className="text-sm md:text-base tracking-wide leading-6">
+                  {content}
+                </p>
               </div>
             </li>
           )
         )}
       </ul>
+      <div className="mt-5 flex w-full justify-center">
+        <Suspense key="pagination-review" fallback={<p>Loading...</p>}>
+          <Pagination totalPages={totalPages} />
+        </Suspense>
+      </div>
     </section>
   );
 }

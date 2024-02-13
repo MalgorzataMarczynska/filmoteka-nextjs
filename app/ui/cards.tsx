@@ -54,10 +54,10 @@ export default function Card({
             )}
 
             <div className="py-2.5 px-2">
-              <h2 className="text-base font-medium uppercase text-zinc-200 tracking-wide">
+              <h2 className="text-sm md:text-base font-medium uppercase text-zinc-200 tracking-wide">
                 {title.length >= 30 ? `${title.slice(0, 27)}...` : title}
               </h2>
-              <p className="text-sm font-medium text-orange-600 pt-1">
+              <p className="text-xs md:text-sm font-medium text-orange-600 pt-1">
                 {genre_ids.length !== 0
                   ? genre_ids.slice(0, 3).join(", ")
                   : "genre unknown"}{" "}

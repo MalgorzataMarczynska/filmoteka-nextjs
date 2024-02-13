@@ -99,7 +99,7 @@ export async function fetchReviews(id: number, page: number) {
       `${API_URL}movie/${id}/reviews?api_key=${API_KEY}&language=en-US&page=${page}`
     );
     const reviews = await response.json();
-    return reviews.results;
+    return reviews;
   } catch (error) {
     console.error("Fetching error:", error);
     throw new Error("Failed to fetch movie's reviews");
@@ -199,6 +199,7 @@ export async function fetchTotalPagesSimilarMovies(id: number, page = 1) {
   const { movies, total_pages } = await fetchSimilarMovies(id, page);
   return total_pages;
 }
+
 export async function fetchMovieById(id: number) {
   noStore();
   try {

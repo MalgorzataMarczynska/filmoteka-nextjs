@@ -16,9 +16,9 @@ export default function Navbar() {
   return (
     <div
       style={{ backgroundImage: `url(${imagePath})` }}
-      className="flex flex-col bg-cover bg-center h-60 justify-between items-center py-11"
+      className="flex flex-col bg-cover bg-center h-48 md:h-60 justify-between items-center py-11"
     >
-      <div className="container mx-auto flex flex-row items-center content-center justify-between">
+      <div className="container mx-auto flex flex-row items-center content-center justify-between px-2">
         <Link href="/">
           <FilmotekaLogo />
         </Link>
@@ -31,14 +31,14 @@ export default function Navbar() {
           <div>Login</div>
         </div>
       </div>
-      <div className="w-2/6">
+      <div className="w-4/6">
         {pathname.includes("library") ? (
           <Suspense key="Filters" fallback={<p>Loading filters...</p>}>
             <Filters />
           </Suspense>
         ) : (
           <Suspense key="search" fallback={<p>Loading searchbar...</p>}>
-            <SearchBar placeholder="Search movies by name" />
+            <SearchBar placeholder="Search movie by name" />
           </Suspense>
         )}
       </div>

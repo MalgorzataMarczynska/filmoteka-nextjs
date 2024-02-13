@@ -2,10 +2,8 @@
 import clsx from "clsx";
 import { users } from "../lib/placeholder-data.js";
 import { addToQueue, addToWatched } from "../lib/actions";
-import { fetchCast } from "../lib/data";
 import { usePathname } from "next/navigation.js";
 import Link from "next/link.js";
-import Cast from "./movieDetails/cast";
 
 const userId = users[0].id;
 
@@ -16,7 +14,7 @@ export function AddToQueueButton({ id }: { id: number }) {
       onClick={() => addToQueue(id, userId)}
       type="button"
       className={clsx(
-        "bg-transparent border border-zinc-900 rounded text-zinc-900 font-medium uppercase py-2 px-5 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105",
+        "bg-transparent border border-zinc-900 rounded text-zinc-900 text-xs md:text-sm font-medium uppercase py-1 md:py-2 px-2 md:px-5 mb-1 md:mb-0 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105",
         {
           "disabled:bg-zinc-500 disabled:border-zinc-500 disabled:text-zinc-600 disabled:hover:scale-100":
             pathname === "/library/queue",
@@ -36,7 +34,7 @@ export function AddToWatchedButton({ id }: { id: number }) {
       onClick={() => addToWatched(id, userId)}
       type="button"
       className={clsx(
-        "bg-transparent border border-zinc-900 rounded text-zinc-900 font-medium uppercase py-2 px-5 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105",
+        "bg-transparent border border-zinc-900 rounded text-zinc-900 text-xs md:text-sm font-medium uppercase py-1 md:py-2 px-2 md:px-5 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105",
         {
           "disabled:bg-zinc-500 disabled:border-zinc-500 disabled:text-zinc-600 disabled:hover:scale-100":
             pathname === "/library/watched",
@@ -53,7 +51,7 @@ export function FindSimilar({ id }: { id: number }) {
   return (
     <Link
       href={`/library/similar?similarTo=${id}`}
-      className="bg-transparent border border-orange-600 rounded text-zinc-900 text-sm font-medium uppercase p-2 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
+      className="bg-transparent border border-orange-600 rounded text-zinc-900 text-center text-xs md:text-sm font-medium uppercase p-1 md:p-2 mb-1 md:mb-0 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
     >
       Find similar movies
     </Link>
@@ -63,9 +61,9 @@ export function ShowDetails({ id }: { id: number }) {
   return (
     <Link
       href={`library/movieDetails?id=${id}`}
-      className="bg-transparent border border-orange-600 rounded text-zinc-900 text-sm font-medium uppercase p-2 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
+      className="bg-transparent border border-orange-600 rounded text-zinc-900 text-center text-xs md:text-sm font-medium uppercase p-1 md:p-2 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
     >
-      Show movie&#39;s cast&reviews
+      Show cast&reviews
     </Link>
   );
 }

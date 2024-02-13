@@ -59,7 +59,7 @@ export default function NavLinks() {
             })}
           >
             <LinkIcon className="w-3 md:w-5 stroke-zinc-200" />
-            <p className="hidden md:flex uppercase text-sm tracking-wider text-zinc-200 font-medium pl-2">
+            <p className="hidden lg:flex uppercase text-sm tracking-wider text-zinc-200 font-medium pl-2">
               {link.name}
             </p>
           </Link>

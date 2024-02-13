@@ -21,8 +21,8 @@ export default async function Page({
   const id = searchParams?.id;
   const totalPages = await fetchTotalPagesUpcomingMovies(currentPage);
   return (
-    <main className="container mx-auto py-10">
-      <h2 className="text-2xl text-center uppercase font-bold tracking-wider text-orange-600 pb-8">
+    <main className="container mx-auto py-5 md:py-10 px-2 md:px-4">
+      <h2 className="text-xl md:text-2xl text-center uppercase font-bold tracking-wider text-orange-600 pb-8">
         Upcoming, the most popular movies in the next three months
       </h2>
       <Suspense key={currentPage} fallback={<CardsWrapperSkeleton />}>

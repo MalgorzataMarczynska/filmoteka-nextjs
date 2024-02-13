@@ -8,7 +8,7 @@ export default async function Cast({ id }: { id: number }) {
   const mainCast = cast.slice(0, 15);
   return (
     <section className="flex flex-col border-b-2 border-zinc-500 py-3">
-      <h3 className="uppercase text-3xl font-bold tracking-wide text-orange-600 mb-2 text-center">
+      <h3 className="uppercase text-xl md:text-3xl font-bold tracking-wide text-orange-600 mb-2 text-center">
         Main cast
       </h3>
       <Link
@@ -18,7 +18,7 @@ export default async function Cast({ id }: { id: number }) {
         Minimize the cast
         <ArrowUpIcon className="stroke-white w-4 ml-2 hover:stroke-white" />
       </Link>
-      <ul className="mt-4 grid gap-4 grid-cols-5 list-none">
+      <ul className="mt-4 mx-auto grid md:gap-4 md:grid-cols-3 lg:grid-cols-5 list-none">
         {mainCast?.map(
           ({
             id,

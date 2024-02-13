@@ -7,7 +7,7 @@ export default function FilmotekaLogo() {
         src="/logo_gray.png"
         width={30}
         height={31}
-        className="flex self-center w-8 h-auto mr-2.5 transition-transform focus:rotate-90 hover:rotate-90"
+        className="flex self-center w-6 md:w-8 h-auto mr-2.5 transition-transform focus:rotate-90 hover:rotate-90"
         alt="Link to home page"
       ></Image>
       <span className="flex hidden md:flex self-center text-3xl font-medium text-white items-center">

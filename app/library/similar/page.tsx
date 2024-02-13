@@ -26,9 +26,9 @@ export default async function Page({
   );
 
   return (
-    <main className="container mx-auto py-10">
+    <main className="container mx-auto py-5 md:py-10 px-2 md:px-4">
       {similarTo ? (
-        <Suspense fallback={<CardsWrapperSkeleton />}>
+        <Suspense key={`similarTo${id}`} fallback={<CardsWrapperSkeleton />}>
           <SimilarMovies id={Number(similarTo)} currentPage={currentPage} />
         </Suspense>
       ) : (

@@ -1,9 +1,8 @@
 import MovieDetails from "@/app/ui/movieDetails/movieDetail";
 import NotFound from "@/app/ui/movieDetails/not-found";
-import Cast from "@/app/ui/movieDetails/cast";
-import Reviews from "@/app/ui/movieDetails/reviews";
-import { ArrowDownIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { MovieDetailsSkeleton } from "@/app/ui/skeletons";
+import { Suspense } from "react";
+
 export default async function Page({
   searchParams,
 }: {
@@ -18,38 +17,25 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
   const show = searchParams?.show;
   const id = searchParams?.id;
-  const cast = searchParams?.cast;
-  const review = searchParams?.review;
+  const cast = searchParams?.cast || false;
+  const review = searchParams?.review || false;
 
   return (
-    <main className="container mx-auto py-10">
-      {id ? <MovieDetails movieId={Number(id)} /> : <NotFound />}
-      <div className="pt-4">
-        {cast ? (
-          <Cast id={Number(id)} />
-        ) : (
-          <Link
-            href={`/library/movieDetails?id=${id}&cast=true`}
-            className=" flex bg-transparent border border-orange-600 rounded text-sm font-medium uppercase py-2 px-4 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
-          >
-            Show movie cast
-            <ArrowDownIcon className="stroke-white w-4 ml-2 hover:stroke-white" />
-          </Link>
-        )}
-      </div>
-      <div className="pt-4">
-        {review ? (
-          <Reviews movieId={Number(id)} currentPage={currentPage} />
-        ) : (
-          <Link
-            href={`/library/movieDetails?id=${id}&review=true`}
-            className=" flex bg-transparent border border-orange-600 rounded text-sm font-medium uppercase py-2 px-4 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
-          >
-            Show movie reviews
-            <ArrowDownIcon className="stroke-white w-4 ml-2 hover:stroke-white" />
-          </Link>
-        )}
-      </div>
+    <main className="container mx-auto py-5 md:py-10 px-2 md:px-4">
+      {id ? (
+        <Suspense key={id} fallback={<MovieDetailsSkeleton />}>
+          <MovieDetails
+            movieId={Number(id)}
+            currentPage={currentPage}
+            cast={cast}
+            review={review}
+          />
+        </Suspense>
+      ) : (
+        <Suspense key="movie not found">
+          <NotFound />
+        </Suspense>
+      )}
     </main>
   );
 }

@@ -23,8 +23,8 @@ export default async function Page({
   const totalPages = Number(await fetchTotalPages(query));
 
   return (
-    <main className="container mx-auto py-10">
-      <h1 className="text-2xl text-center uppercase font-bold tracking-wider text-orange-600 pb-8">
+    <main className="container mx-auto py-5 md:py-10 px-2 md:px-4">
+      <h1 className="text-xl md:text-2xl text-center uppercase font-bold tracking-wider text-orange-600 pb-8">
         {query ? "Searched movies" : "Trending movies this week"}
       </h1>
 
