@@ -1,7 +1,6 @@
-import { User, LibraryMovie } from "./definitions";
+import { LibraryMovie } from "./definitions";
 import { sql } from "@vercel/postgres";
 import { unstable_noStore as noStore } from "next/cache";
-import { StarIcon } from "@heroicons/react/24/outline";
 
 const API_URL = "https://api.themoviedb.org/3/";
 const API_KEY = process.env.MOVIEDB_API;
@@ -262,5 +261,25 @@ export async function countMovies(status: string, user: string) {
   } catch (error) {
     console.error("Fetching error:", error);
     throw new Error(`Failed to count ${status} movies from database`);
+  }
+}
+export async function fetchDirector(id: number) {
+  noStore();
+  try {
+    const response = await fetch(
+      `${API_URL}movie/${id}/credits?api_key=${API_KEY}&language=en-US`
+    );
+    const cast = await response.json();
+    const crew = cast.crew;
+    const director = crew
+      .filter(
+        ({ name, job }: { name: string; job: string }) => job === "Director"
+      )
+      .map(({ name, job }: { name: string; job: string }) => name);
+    console.log("director in func", director);
+    return director;
+  } catch (error) {
+    console.error("Fetching error:", error);
+    throw new Error("Failed to fetch movie's cast");
   }
 }

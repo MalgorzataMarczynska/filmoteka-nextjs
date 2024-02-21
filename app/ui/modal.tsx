@@ -8,6 +8,7 @@ import {
   FindSimilar,
   ShowDetails,
 } from "./buttons";
+import { getUserId } from "../lib/actions";
 
 export default async function Modal({
   movieId,
@@ -20,6 +21,8 @@ export default async function Modal({
   search: string;
   page: number;
 }) {
+  const userData = await getUserId();
+  const userId = userData?.id;
   const backToPath = backTo.split("?");
   if (!movieId) {
     return;
@@ -173,8 +176,8 @@ export default async function Modal({
                 </p>
               </div>
               <div className="mt-5 md:mt-10 flex flex-col md:flex-row md:justify-between">
-                <AddToQueueButton id={id} />
-                <AddToWatchedButton id={id} />
+                <AddToQueueButton id={id} userId={userId} />
+                <AddToWatchedButton id={id} userId={userId} />
               </div>
               <div className="mt-5 md:mt-10 flex flex-col md:flex-row md:justify-between">
                 <FindSimilar id={id} />

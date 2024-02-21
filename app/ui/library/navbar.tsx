@@ -1,14 +1,14 @@
 import FilmotekaLogo from "../filmoteka-logo";
 import Link from "next/link";
 import NavLinks from "../nav-links";
-import SearchBar from "./search";
+import Filters from "../library/navfilters";
 import { Suspense } from "react";
 import LogFunction from "../logFunction";
 
 export default function Navbar() {
   return (
     <div
-      style={{ backgroundImage: `url(/home_desktop_opt.jpg)` }}
+      style={{ backgroundImage: `url(/library_desktop_opt.jpg)` }}
       className="flex flex-col bg-cover bg-center h-48 md:h-60 justify-between items-center py-11"
     >
       <div className="container mx-auto flex flex-row items-center content-center justify-between px-2">
@@ -29,8 +29,8 @@ export default function Navbar() {
         </div>
       </div>
       <div className="w-4/6">
-        <Suspense key="search" fallback={<p>Loading searchbar...</p>}>
-          <SearchBar placeholder="Search movie by name" />
+        <Suspense key="Filters" fallback={<p>Loading filters...</p>}>
+          <Filters />
         </Suspense>
       </div>
     </div>

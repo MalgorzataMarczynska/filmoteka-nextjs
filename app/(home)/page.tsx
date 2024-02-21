@@ -1,10 +1,15 @@
 import { Suspense } from "react";
-import TrendingMoviesChart from "./ui/home/trendingMovies";
-import SearchedMovieChart from "./ui/home/searchedMovies";
-import { CardsWrapperSkeleton, MovieSkeleton } from "./ui/skeletons";
-import Pagination from "./ui/pagination";
-import Modal from "./ui/modal";
-import { fetchTotalPages } from "./lib/data";
+import TrendingMoviesChart from "../ui/home/trendingMovies";
+import SearchedMovieChart from "../ui/home/searchedMovies";
+import { CardsWrapperSkeleton, MovieSkeleton } from "../ui/skeletons";
+import Pagination from "../ui/pagination";
+import Modal from "../ui/modal";
+import { fetchTotalPages } from "../lib/data";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Trending movies this week",
+};
 
 export default async function Page({
   searchParams,

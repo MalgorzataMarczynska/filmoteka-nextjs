@@ -20,7 +20,7 @@ export default function Filters() {
             className={clsx(
               "flex w-1/3 justify-center bg-transparent rounded border border-white py-2.5",
               {
-                "bg-orange-400/85 border-orange-400": pathname === filter.href,
+                "bg-orange-600/85 border-black": pathname === filter.href,
               }
             )}
           >

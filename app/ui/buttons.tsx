@@ -4,10 +4,17 @@ import { users } from "../lib/placeholder-data.js";
 import { addToQueue, addToWatched } from "../lib/actions";
 import { usePathname } from "next/navigation.js";
 import Link from "next/link.js";
+import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/24/outline";
 
 const userId = users[0].id;
 
-export function AddToQueueButton({ id }: { id: number }) {
+export function AddToQueueButton({
+  id,
+  userId,
+}: {
+  id: number;
+  userId: string;
+}) {
   const pathname = usePathname();
   return (
     <button
@@ -27,7 +34,13 @@ export function AddToQueueButton({ id }: { id: number }) {
     </button>
   );
 }
-export function AddToWatchedButton({ id }: { id: number }) {
+export function AddToWatchedButton({
+  id,
+  userId,
+}: {
+  id: number;
+  userId: string;
+}) {
   const pathname = usePathname();
   return (
     <button
@@ -64,6 +77,16 @@ export function ShowDetails({ id }: { id: number }) {
       className="bg-transparent border border-orange-600 rounded text-zinc-900 text-center text-xs md:text-sm font-medium uppercase p-1 md:p-2 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
     >
       Show cast&reviews
+    </Link>
+  );
+}
+export function LoginLink() {
+  return (
+    <Link href="/login" className="flex">
+      <ArrowLeftEndOnRectangleIcon className="w-5" />
+      <p className="ml-2 uppercase hidden md:flex text-xs md:text-sm">
+        Log in, anonymous
+      </p>
     </Link>
   );
 }

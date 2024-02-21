@@ -5,6 +5,12 @@ import Pagination from "@/app/ui/pagination";
 import Modal from "@/app/ui/modal";
 import NotFound from "@/app/ui/similar/not-found";
 import { Suspense } from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Similar movies to choose movie",
+};
+
 export default async function Page({
   searchParams,
 }: {

@@ -2,6 +2,11 @@ import MovieDetails from "@/app/ui/movieDetails/movieDetail";
 import NotFound from "@/app/ui/movieDetails/not-found";
 import { MovieDetailsSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Movie details",
+};
 
 export default async function Page({
   searchParams,

@@ -1,4 +1,4 @@
-import { fetchMovieById } from "@/app/lib/data";
+import { fetchMovieById, fetchDirector } from "@/app/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import Cast from "./cast";
@@ -39,6 +39,8 @@ export default async function MovieDetails({
     .map(({ id, name }: { id: number; name: string }) => name)
     .slice(0, 3)
     .join(", ");
+  const director = await fetchDirector(movieId);
+  const formattedDirector = director?.join(", ");
 
   return (
     <div className="flex flex-col">
@@ -72,6 +74,14 @@ export default async function MovieDetails({
             </span>
           </h3>
           <ul>
+            <li className="pt-2 pb-1">
+              <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
+                Director:
+              </span>
+              <span className="text-sm md:text-base tracking-wide">
+                {formattedDirector}
+              </span>
+            </li>
             <li className="pt-2 pb-1">
               <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
                 Release date:

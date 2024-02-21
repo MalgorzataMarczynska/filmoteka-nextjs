@@ -1,10 +1,15 @@
 import WatchedMoviesChart from "@/app/ui/watched/watchedMovies";
 import Pagination from "@/app/ui/pagination";
 import { countMovies } from "@/app/lib/data";
-import { users } from "../../lib/placeholder-data";
+import { getUserId } from "@/app/lib/actions";
 import { Suspense } from "react";
 import { CardsWrapperSkeleton, MovieSkeleton } from "@/app/ui/skeletons";
 import Modal from "@/app/ui/modal";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Watched movies",
+};
 
 export default async function Page({
   searchParams,
@@ -16,7 +21,8 @@ export default async function Page({
     id: string | undefined;
   };
 }) {
-  const user = users[0].id;
+  const userData = await getUserId();
+  const user = userData?.id;
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const show = searchParams?.show;

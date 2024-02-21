@@ -37,19 +37,21 @@ export default async function Cast({ id }: { id: number }) {
             >
               {profile_path ? (
                 <Image
+                  priority
                   src={`https://image.tmdb.org/t/p/w500${profile_path}`}
                   alt={`Photography of ${name}`}
                   width={500}
                   height={800}
-                  className="w-full h-4/5"
+                  className="w-full h-5/6"
                 />
               ) : (
                 <Image
+                  priority
                   src={`https://image.tmdb.org/t/p/w500/wmyYQbahIy4SF2Qo6qNBBkJFg7z.jpg`}
                   alt={`Mock image of ${name}`}
                   width={500}
                   height={800}
-                  className="w-full h-4/5"
+                  className="w-full h-5/6"
                 />
               )}
               <div className="p-2">
