@@ -1,28 +1,23 @@
 import CardsWrapper from "../cardswrapper";
-import Card from "../cards";
+import TvCard from "../tvCards";
 import { fetchMovieDetails, fetchMovieIdsByStatus } from "@/app/lib/data";
 import NotFoundQueue from "./not-found";
 
-export default async function QueueMoviesChart({
+export default async function QueueSeriesChart({
   currentPage,
   userId,
 }: {
   currentPage: number;
   userId: string;
 }) {
-  const ids = await fetchMovieIdsByStatus(
-    "queue",
-    userId,
-    currentPage,
-    "movie"
-  );
-  const movies = ids ? await fetchMovieDetails(ids, "movie") : undefined;
+  const ids = await fetchMovieIdsByStatus("queue", userId, currentPage, "tv");
+  const movies = ids ? await fetchMovieDetails(ids, "tv") : undefined;
 
   return (
     <>
       {movies ? (
         <CardsWrapper>
-          <Card movies={movies} />
+          <TvCard series={movies} />
         </CardsWrapper>
       ) : (
         <NotFoundQueue />

@@ -90,20 +90,6 @@ export function MovieSkeleton() {
                 </h3>
                 <p className="text-xs text-zinc-900 font-medium leading-relaxed tracking-wide"></p>
               </div>
-              <div className="mt-10 flex justify-between">
-                <button
-                  type="button"
-                  className="bg-transparent border border-zinc-900 rounded text-zinc-900 font-medium uppercase py-2 px-5 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
-                >
-                  Add to queue
-                </button>
-                <button
-                  type="button"
-                  className="bg-transparent border border-zinc-900 rounded text-zinc-900 font-medium uppercase py-2 px-5 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
-                >
-                  Add to watched
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -233,5 +219,74 @@ export function ReviewsSkeleton() {
       </ul>
       <div className="mt-5 flex w-full justify-center"></div>
     </section>
+  );
+}
+export function TvDetailsSkeleton() {
+  return (
+    <div className="flex flex-col">
+      <section className="flex flex-col md:flex-row border-b-2 border-zinc-500 py-3">
+        <div className="md:w-2/12 md:mr-6"></div>
+        <div className="mt-3 px-1 md:px-0 md:mt-0 md:w-9/12">
+          <h3 className="uppercase text-xl md:text-3xl font-bold tracking-wide text-orange-600 mb-2">
+            {" "}
+            <span className="text-base md:text-lg">
+              &#91;original title: &#34;&#34;&#93;
+            </span>
+          </h3>
+          <ul>
+            <li className="pt-2 pb-1">
+              <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
+                Created by:
+              </span>
+              <span className="text-sm md:text-base tracking-wide"></span>
+            </li>
+            <li className="pt-2 pb-1">
+              <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
+                First episode date: / Last episode date / Status of production:
+              </span>
+              <span className="text-sm md:text-base tracking-wide"></span>
+            </li>
+            <li className="pt-2 pb-1">
+              <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
+                Number of seasons: / Number of episodes:
+              </span>
+              <span className="text-sm md:text-base tracking-wide"></span>
+            </li>
+            <li className="pt-2 pb-1">
+              <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
+                Genres:
+              </span>
+              <span className="text-sm md:text-base tracking-wide"></span>
+            </li>
+            <li className="pt-2 pb-1">
+              <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
+                Vote average / Vote count / Popularity:
+              </span>
+              <span className="text-sm md:text-base tracking-wide">
+                <span className="text-orange-600 font-bold"></span>{" "}
+              </span>
+            </li>
+            <li className="pt-2 pb-1">
+              <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
+                Network:
+              </span>
+              <span className="text-sm md:text-base tracking-wide"></span>
+            </li>
+            <li className="pt-2 pb-1">
+              <span className="uppercase text-sm md:text-base font-bold tracking-wide text-zinc-500 mr-4">
+                Overview:
+              </span>
+              <span className="text-sm md:text-base tracking-wide"></span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section>
+        <div className="pt-4"></div>
+      </section>
+      <section>
+        <div className="pt-4"></div>
+      </section>
+    </div>
   );
 }

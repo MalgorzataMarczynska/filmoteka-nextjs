@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
 
-export default async function Cast({ id }: { id: number }) {
-  const cast = await fetchCast(id);
+export default async function Cast({ id, type }: { id: number; type: string }) {
+  const cast = await fetchCast(id, type);
   const mainCast = cast.slice(0, 15);
   return (
     <section className="flex flex-col border-b-2 border-zinc-500 py-3">
@@ -12,7 +12,7 @@ export default async function Cast({ id }: { id: number }) {
         Main cast
       </h3>
       <Link
-        href={`/library/movieDetails?id=${id}`}
+        href={`/library/movieDetails?id=${id}&type=${type}`}
         className="flex bg-transparent border border-orange-600 rounded text-sm font-medium uppercase text-center py-2 px-4 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
       >
         Minimize the cast

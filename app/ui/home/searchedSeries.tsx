@@ -1,8 +1,8 @@
 import CardsWrapper from "../cardswrapper";
-import Card from "../cards";
+import TvCard from "../tvCards";
 import { fetchSearchedWithGenreNames } from "@/app/lib/data";
 
-export default async function SearchedMovieChart({
+export default async function SearchedSerieChart({
   search,
   pageNo,
   type,
@@ -11,10 +11,10 @@ export default async function SearchedMovieChart({
   pageNo: number;
   type: string;
 }) {
-  const movies = await fetchSearchedWithGenreNames(search, pageNo, type);
+  const series = await fetchSearchedWithGenreNames(search, pageNo, type);
   return (
     <CardsWrapper>
-      <Card movies={movies} />
+      <TvCard series={series} />
     </CardsWrapper>
   );
 }

@@ -15,13 +15,13 @@ export default function Navbar() {
         <Link href="/">
           <FilmotekaLogo />
         </Link>
-        <div className="flex justify-between">
-          <nav className="flex items-center justify-between mr-4">
+        <div className="flex flex-col items-end justify-start">
+          <nav className="flex items-center justify-between mr-4 mb-4">
             <Suspense key="nav-links" fallback={<p>Loading links</p>}>
               <NavLinks />
             </Suspense>
           </nav>
-          <div>
+          <div className="mr-4">
             <Suspense key="log-func" fallback={<p>Loading login</p>}>
               <LogFunction />
             </Suspense>

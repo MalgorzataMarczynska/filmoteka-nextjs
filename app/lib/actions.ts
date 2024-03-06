@@ -4,20 +4,28 @@ import { LibraryMovie } from "./definitions";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 const bcrypt = require("bcrypt");
 import { signIn, auth } from "@/auth";
 import { AuthError } from "next-auth";
 
 const date = new Date().toISOString().split("T")[0];
-export async function addToQueue(movieId: number, userId: string) {
+
+export async function addToQueue(
+  movieId: number,
+  userId: string,
+  type: string
+) {
   const duplicatedMovie =
-    await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${userId} AND movies.movie_id = ${movieId} AND movies.status = 'queue'`;
+    await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${userId} AND movies.movie_id = ${movieId} AND movies.status = 'queue' AND movies.type = ${type}`;
   const differentStatusMovie =
-    await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${userId} AND movies.movie_id = ${movieId} AND movies.status = 'watched'`;
+    await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${userId} AND movies.movie_id = ${movieId} AND movies.status = 'watched' AND movies.type = ${type}`;
   const data = await Promise.all([duplicatedMovie, differentStatusMovie]);
   const duplicated = data[0].rows.length;
   const differentStatus = data[1].rows.length;
+  if (!userId) {
+    return;
+  }
 
   try {
     if (duplicated !== 0) {
@@ -25,26 +33,33 @@ export async function addToQueue(movieId: number, userId: string) {
     }
     if (differentStatus !== 0) {
       console.log(" I am changing status to queue");
-      await sql`UPDATE movies SET status = 'queue' WHERE user_id = ${userId} AND movie_id = ${movieId}`;
+      await sql`UPDATE movies SET status = 'queue' WHERE user_id = ${userId} AND movie_id = ${movieId} AND movies.type = ${type}`;
       revalidatePath("/library/queue");
       revalidatePath("/library/watched");
       return;
     }
-    console.log(`I am saving queue data ${userId}, ${movieId}`);
-    await sql`INSERT INTO movies (user_id, movie_id, status, date) VALUES (${userId}, ${movieId}, 'queue', ${date})`;
+    console.log(`I am saving queue data`);
+    await sql`INSERT INTO movies (user_id, movie_id, type, status, date) VALUES (${userId}, ${movieId}, ${type},'queue', ${date})`;
     revalidatePath("/library/queue");
   } catch (error) {
     return { message: "Failed to add to queue" };
   }
 }
-export async function addToWatched(movieId: number, userId: string) {
+export async function addToWatched(
+  movieId: number,
+  userId: string,
+  type: string
+) {
   const duplicatedMovie =
-    await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${userId} AND movies.movie_id = ${movieId} AND movies.status = 'watched'`;
+    await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${userId} AND movies.movie_id = ${movieId} AND movies.status = 'watched' AND movies.type = ${type}`;
   const differentStatusMovie =
-    await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${userId} AND movies.movie_id = ${movieId} AND movies.status = 'queue'`;
+    await sql<LibraryMovie>`SELECT movies.movie_id FROM movies WHERE movies.user_id = ${userId} AND movies.movie_id = ${movieId} AND movies.status = 'queue' AND movies.type = ${type}`;
   const data = await Promise.all([duplicatedMovie, differentStatusMovie]);
   const duplicated = data[0].rows.length;
   const differentStatus = data[1].rows.length;
+  if (!userId) {
+    return;
+  }
 
   try {
     if (duplicated !== 0) {
@@ -52,13 +67,13 @@ export async function addToWatched(movieId: number, userId: string) {
     }
     if (differentStatus !== 0) {
       console.log(" I am changing status to watched");
-      await sql`UPDATE movies SET status = 'watched' WHERE user_id = ${userId} AND movie_id = ${movieId}`;
+      await sql`UPDATE movies SET status = 'watched' WHERE user_id = ${userId} AND movie_id = ${movieId} AND movies.type = ${type}`;
       revalidatePath("/library/watched");
       revalidatePath("/library/queue");
       return;
     }
     console.log(" I am saving watched data");
-    await sql`INSERT INTO movies (user_id, movie_id, status, date) VALUES (${userId}, ${movieId}, 'watched', ${date})`;
+    await sql`INSERT INTO movies (user_id, movie_id, type, status, date) VALUES (${userId}, ${movieId}, ${type},'watched', ${date})`;
     revalidatePath("/library/watched");
   } catch (error) {
     return { message: "Failed to add to watched" };

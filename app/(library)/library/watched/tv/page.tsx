@@ -1,15 +1,10 @@
-import QueueMoviesChart from "@/app/ui/queue/queueMovies";
+import WatchedSeriesChart from "@/app/ui/watched/watchedSeries";
 import Pagination from "@/app/ui/pagination";
+import { Suspense } from "react";
 import { countMovies } from "@/app/lib/data";
 import { getUserId } from "@/app/lib/actions";
-import { Suspense } from "react";
-import { CardsWrapperSkeleton, MovieSkeleton } from "@/app/ui/skeletons";
-import Modal from "@/app/ui/modal";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Queue to watch",
-};
+import TvModal from "@/app/ui/tvModal";
+import { MovieSkeleton } from "@/app/ui/skeletons";
 
 export default async function Page({
   searchParams,
@@ -21,27 +16,26 @@ export default async function Page({
     id: string | undefined;
   };
 }) {
-  const userData = await getUserId();
-  const user = userData?.id;
+  const user = await getUserId();
+  const userId = user?.id;
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   const show = searchParams?.show;
   const id = searchParams?.id;
-  const totalPages = await countMovies("queue", user);
-
+  const totalPages = await countMovies("queue", userId, "movies");
   return (
     <main className="container mx-auto py-5 md:py-10 px-2 md:px-4">
       <h2 className="text-xl md:text-2xl text-center uppercase font-bold tracking-wider text-orange-600 pb-8">
-        Your movie in queue to watch
+        Your watched series
       </h2>
-      <Suspense key={currentPage} fallback={<CardsWrapperSkeleton />}>
-        <QueueMoviesChart currentPage={currentPage} />
-      </Suspense>
+      <div>
+        <WatchedSeriesChart currentPage={currentPage} userId={userId} />
+      </div>
       {show && (
         <Suspense key={id} fallback={<MovieSkeleton />}>
-          <Modal
+          <TvModal
             movieId={id}
-            backTo={"queue"}
+            backTo={"watched series"}
             search={query}
             page={currentPage}
           />

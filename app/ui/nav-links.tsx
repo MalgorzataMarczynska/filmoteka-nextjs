@@ -2,22 +2,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  HomeIcon,
   FilmIcon,
   BookmarkIcon,
   BookmarkSlashIcon,
   BellIcon,
-  PuzzlePieceIcon,
-  ArrowLeftEndOnRectangleIcon,
-  ArrowLeftStartOnRectangleIcon,
+  TvIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 const links = [
   {
-    name: "Home",
+    name: "Trending Movies",
     href: "/",
-    icon: HomeIcon,
+    icon: FilmIcon,
+  },
+  {
+    name: "Trending TV",
+    href: "/trendingTV",
+    icon: TvIcon,
   },
   {
     name: "Upcoming Movies",
@@ -25,23 +27,23 @@ const links = [
     icon: BellIcon,
   },
   {
-    name: "Similar Movies",
-    href: "/library/similar",
-    icon: PuzzlePieceIcon,
-  },
-  {
-    name: "Movie details",
-    href: "/library/movieDetails",
-    icon: FilmIcon,
-  },
-  {
-    name: "Queue",
-    href: "/library/queue",
+    name: "Queue Movies",
+    href: "/library/queue/movies",
     icon: BookmarkIcon,
   },
   {
-    name: "Watched",
-    href: "/library/watched",
+    name: "Queue TV",
+    href: "/library/queue/tv",
+    icon: BookmarkIcon,
+  },
+  {
+    name: "Watched Movies",
+    href: "/library/watched/movies",
+    icon: BookmarkSlashIcon,
+  },
+  {
+    name: "Watched TV",
+    href: "/library/watched/tv",
     icon: BookmarkSlashIcon,
   },
 ];
@@ -55,13 +57,16 @@ export default function NavLinks() {
           <Link
             key={link.name}
             href={link.href}
-            className={clsx("flex items-center justify-between ml-6", {
-              "underline decoration-2 decoration-orange-700 underline-offset-8":
-                pathname === link.href,
-            })}
+            className={clsx(
+              "flex items-center justify-between ml-5 transition-transform hover:scale-105 focus:scale-105",
+              {
+                "underline decoration-2 decoration-orange-700 underline-offset-8":
+                  pathname === link.href,
+              }
+            )}
           >
-            <LinkIcon className="w-3 md:w-5 stroke-zinc-200" />
-            <p className="hidden lg:flex uppercase text-sm tracking-wider text-zinc-200 font-medium pl-2">
+            <LinkIcon className="w-3 md:w-5 stroke-orange-600" />
+            <p className="hidden lg:flex uppercase text-sm tracking-wide text-zinc-400 font-bold pl-2">
               {link.name}
             </p>
           </Link>

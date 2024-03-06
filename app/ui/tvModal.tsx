@@ -1,4 +1,4 @@
-import { fetchMovieById } from "../lib/data";
+import { fetchMovieById } from "@/app/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -7,11 +7,11 @@ import {
   AddToWatchedButton,
   FindSimilar,
   ShowDetails,
+  NonLoginModalButton,
 } from "./buttons";
-import { getUserId } from "../lib/actions";
-import { NonLoginModalButton } from "./buttons";
+import { getUserId } from "@/app/lib/actions";
 
-export default async function Modal({
+export default async function TvModal({
   movieId,
   backTo,
   search,
@@ -62,10 +62,8 @@ export default async function Modal({
       href: "/trendingTV",
     },
   ];
-
   const valuedPath = pathValues.find((path) => path.value === backToPath[0]);
-  const path = valuedPath ? valuedPath.href : "/";
-
+  const path = valuedPath ? valuedPath.href : "/trendingTV";
   const backPath = (query: string, page: number) => {
     if (query && page > 1) {
       return `${path}/?query=${query}&page=${page}`;
@@ -86,21 +84,26 @@ export default async function Modal({
   };
 
   const numberMovieId = Number(movieId);
-  const movie = await fetchMovieById(numberMovieId, "movie");
+  const serie = await fetchMovieById(numberMovieId, "tv");
   const {
     id,
     poster_path,
-    title,
-    original_title,
+    name,
+    original_name,
     genres,
     vote_average,
     vote_count,
     popularity,
     overview,
-  } = movie;
+    networks,
+    status,
+  } = serie;
   const genreNames = genres
     .map(({ id, name }: { id: number; name: string }) => name)
     .slice(0, 3)
+    .join(", ");
+  const networkName = networks
+    .map(({ name }: { name: string }) => name)
     .join(", ");
   return (
     <>
@@ -123,7 +126,7 @@ export default async function Modal({
                   src={`https://image.tmdb.org/t/p/w500${poster_path}`}
                   width={500}
                   height={800}
-                  alt={`Poster of ${title}`}
+                  alt={`Poster of ${name}`}
                   className="w-full h-full rounded-md overflow:hidden"
                 />
               ) : (
@@ -132,14 +135,14 @@ export default async function Modal({
                   src={`https://image.tmdb.org/t/p/w500/wmyYQbahIy4SF2Qo6qNBBkJFg7z.jpg`}
                   width={500}
                   height={800}
-                  alt={`Poster of ${title}`}
+                  alt={`Poster of ${name}`}
                   className="w-full h-full rounded-md overflow:hidden"
                 />
               )}
             </div>
             <div className="block mx-auto md:flex flex-col md:pl-16 md:pr-2 w-full md:w-7/12">
               <h2 className="text-xl md:text-3xl font-bold text-zinc-900 uppercase w-11/12">
-                {title}
+                {name}
               </h2>
               <ul className="flex flex-col py-3 md:py-5">
                 <li className="flex flex-row items-center">
@@ -166,17 +169,33 @@ export default async function Modal({
                     Original Title
                   </p>
                   <span className="text-zinc-900 text-xs md:text-sm font-medium uppercase pl-3">
-                    {original_title.length > 35
-                      ? original_title.slice(0, 35) + "..."
-                      : original_title}
+                    {original_name.length > 35
+                      ? original_name.slice(0, 35) + "..."
+                      : original_name}
+                  </span>
+                </li>
+                <li className="flex flex-row items-center pb-1">
+                  <p className="text-xs md:text-sm text-zinc-500 w-3/12">
+                    Genre
+                  </p>
+                  <span className="text-zinc-900 text-xs md:text-sm font-medium pl-3">
+                    {genreNames}
+                  </span>
+                </li>
+                <li className="flex flex-row items-center pb-1">
+                  <p className="text-xs md:text-sm text-zinc-500 w-3/12">
+                    Status:
+                  </p>
+                  <span className="text-zinc-900 text-xs md:text-sm font-medium pl-3">
+                    {status}
                   </span>
                 </li>
                 <li className="flex flex-row items-center">
                   <p className="text-xs md:text-sm text-zinc-500 w-3/12">
-                    Genre
+                    Network
                   </p>
                   <span className="text-zinc-900 text-xs md:text-sm font-medium  pl-3">
-                    {genreNames}
+                    {networkName}
                   </span>
                 </li>
               </ul>
@@ -190,8 +209,8 @@ export default async function Modal({
               </div>
               {userId ? (
                 <div className="mt-5 md:mt-10 flex flex-col md:flex-row md:justify-between">
-                  <AddToQueueButton id={id} userId={userId} type={"movie"} />
-                  <AddToWatchedButton id={id} userId={userId} type={"movie"} />
+                  <AddToQueueButton id={id} userId={userId} type={"tv"} />
+                  <AddToWatchedButton id={id} userId={userId} type={"tv"} />
                 </div>
               ) : (
                 <div className="mt-5 md:mt-10 flex flex-col md:flex-row md:justify-between">
@@ -200,8 +219,8 @@ export default async function Modal({
               )}
               {userId ? (
                 <div className="mt-5 md:mt-10 flex flex-col md:flex-row md:justify-between">
-                  <FindSimilar id={id} type={"movie"} />
-                  <ShowDetails id={id} type={"movie"} />
+                  <FindSimilar id={id} type={"tv"} />
+                  <ShowDetails id={id} type={"tv"} />
                 </div>
               ) : null}
             </div>

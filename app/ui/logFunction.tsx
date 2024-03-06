@@ -17,9 +17,9 @@ export default async function LogFunction() {
           }}
           className="flex"
         >
-          <button className="flex">
-            <ArrowLeftStartOnRectangleIcon className="w-3 md:w-5" />
-            <p className="hidden md:flex text-xs md:text-sm uppercase ml-2">
+          <button className="flex items-center transition-transform hover:scale-105 focus:scale-105">
+            <ArrowLeftStartOnRectangleIcon className="w-3 md:w-5 stroke-orange-600" />
+            <p className="hidden md:flex text-base text-zinc-400 font-bold uppercase ml-2">
               Sign Out, {user.name}
             </p>
           </button>

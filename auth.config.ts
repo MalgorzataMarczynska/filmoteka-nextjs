@@ -9,7 +9,9 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isOnLibrary = nextUrl.pathname.startsWith("/library");
       const isOnHomePage =
-        nextUrl.pathname === "/" || nextUrl.pathname.startsWith("/home");
+        nextUrl.pathname === "/" ||
+        nextUrl.pathname.startsWith("/home") ||
+        nextUrl.pathname === "/trendingTV";
       if (isOnHomePage) return true;
       if (isOnLibrary) {
         if (isLoggedIn) return true;

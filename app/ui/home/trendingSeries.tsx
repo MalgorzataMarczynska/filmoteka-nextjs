@@ -1,18 +1,18 @@
 import CardsWrapper from "../cardswrapper";
-import Card from "../cards";
+import TvCard from "../tvCards";
 import { fetchTrendingWithGenreNames } from "@/app/lib/data";
 
-export default async function TrendingMoviesChart({
+export default async function TrendingSeriesChart({
   page,
   type,
 }: {
   page: number;
   type: string;
 }) {
-  const movies = await fetchTrendingWithGenreNames(page, type);
+  const series = await fetchTrendingWithGenreNames(page, type);
   return (
     <CardsWrapper>
-      <Card movies={movies} />
+      <TvCard series={series} />
     </CardsWrapper>
   );
 }

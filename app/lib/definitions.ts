@@ -7,6 +7,7 @@ export type User = {
 export type LibraryMovie = {
   user_id: string;
   movie_id: number;
+  type: "movie" | "tv";
   status: "watched" | "queue";
   date: string;
 };

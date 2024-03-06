@@ -7,11 +7,13 @@ import Pagination from "../pagination";
 export default async function Reviews({
   movieId,
   currentPage,
+  type,
 }: {
   movieId: number;
   currentPage: number;
+  type: string;
 }) {
-  const data = await fetchReviews(movieId, currentPage);
+  const data = await fetchReviews(movieId, currentPage, type);
   const reviews = data.results;
   const totalPages = data.total_pages;
 
@@ -21,7 +23,7 @@ export default async function Reviews({
         Reviews
       </h3>
       <Link
-        href={`/library/movieDetails?id=${movieId}`}
+        href={`/library/movieDetails?id=${movieId}&type=${type}`}
         className="flex bg-transparent border border-orange-600 rounded text-sm font-medium uppercase text-center py-2 px-4 transition-colors transition-transform hover:bg-orange-600 hover:border-orange-600 hover:text-zinc-100 hover:scale-105"
       >
         Minimize the reviews

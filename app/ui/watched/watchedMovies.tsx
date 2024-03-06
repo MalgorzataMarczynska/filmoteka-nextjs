@@ -1,19 +1,31 @@
 import CardsWrapper from "../cardswrapper";
 import Card from "../cards";
-import { fetchMovieDetails, fetchMovieIdsByStatus } from "@/app/lib/data";
-import { users } from "../../lib/placeholder-data";
+import {
+  fetchMovieDetails,
+  fetchMovieIdsByStatus,
+  countMovies,
+} from "@/app/lib/data";
 import NotFoundWatched from "./not-found";
-import { getUserId } from "@/app/lib/actions";
+import Link from "next/link";
+import { ArrowUpIcon } from "@heroicons/react/24/outline";
+import { Suspense } from "react";
+import Pagination from "../pagination";
 
 export default async function WatchedMoviesChart({
   currentPage,
+  userId,
 }: {
   currentPage: number;
+  userId: string;
 }) {
-  const userData = await getUserId();
-  const user = userData?.id;
-  const ids = await fetchMovieIdsByStatus("watched", user, currentPage);
-  const movies = ids ? await fetchMovieDetails(ids) : undefined;
+  const ids = await fetchMovieIdsByStatus(
+    "watched",
+    userId,
+    currentPage,
+    "movie"
+  );
+  const movies = ids ? await fetchMovieDetails(ids, "movie") : undefined;
+
   return (
     <>
       {movies ? (

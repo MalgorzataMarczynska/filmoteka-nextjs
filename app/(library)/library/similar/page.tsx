@@ -1,4 +1,4 @@
-import { fetchTotalPagesSimilarMovies } from "@/app/lib/data";
+import { fetchTotalPagesSimilar } from "@/app/lib/data";
 import { CardsWrapperSkeleton, MovieSkeleton } from "@/app/ui/skeletons";
 import SimilarMovies from "@/app/ui/similar/similarCards";
 import Pagination from "@/app/ui/pagination";
@@ -20,6 +20,7 @@ export default async function Page({
     show?: boolean;
     id?: string;
     similarTo?: string;
+    type?: string;
   };
 }) {
   const query = searchParams?.query || "";
@@ -27,15 +28,20 @@ export default async function Page({
   const show = searchParams?.show;
   const id = searchParams?.id;
   const similarTo = searchParams?.similarTo;
+  const similarType = searchParams?.type || "";
   const totalPages = Number(
-    await fetchTotalPagesSimilarMovies(Number(similarTo), currentPage)
+    await fetchTotalPagesSimilar(Number(similarTo), currentPage, similarType)
   );
 
   return (
     <main className="container mx-auto py-5 md:py-10 px-2 md:px-4">
       {similarTo ? (
         <Suspense key={`similarTo${id}`} fallback={<CardsWrapperSkeleton />}>
-          <SimilarMovies id={Number(similarTo)} currentPage={currentPage} />
+          <SimilarMovies
+            id={Number(similarTo)}
+            currentPage={currentPage}
+            type={similarType}
+          />
         </Suspense>
       ) : (
         <NotFound />
@@ -44,7 +50,7 @@ export default async function Page({
         <Suspense key={id} fallback={<MovieSkeleton />}>
           <Modal
             movieId={id}
-            backTo={`similar?similarTo=${similarTo}`}
+            backTo={`similar?similarTo=${similarTo}&type=${similarType}`}
             search={query}
             page={currentPage}
           />
